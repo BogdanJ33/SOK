@@ -1,2 +1,0 @@
-class SimpleVisualizer():
-    pass
