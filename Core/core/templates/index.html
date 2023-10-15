@@ -18,6 +18,9 @@
             <input type="file" name="file" id="file" required>
             <button type="submit" id="parse-btn">Parsiraj</button>
         </form>
+        {% block content %}
+        {{ visualization_html|safe }}
+        {% endblock %}
     </nav>
 </div>
 </body>
