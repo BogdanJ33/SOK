@@ -4,11 +4,12 @@ from django.db import models
 
 
 class Node:
-    def __init__(self, name, attributes=None, children=None, text=None):
+    def __init__(self, name, attributes=None, children=None, text=None, parent = None):
         self.name = name
         self.attributes = attributes or {}
         self.children = children or []
         self.text = text
+        self.parent = parent
 
     def add_child(self, child):
         self.children.append(child)
