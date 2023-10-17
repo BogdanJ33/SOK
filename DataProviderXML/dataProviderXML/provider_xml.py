@@ -39,13 +39,11 @@ class ProviderXML:
         edges = []
 
         # Add information about the current node
-        if node.text is not None:
-            nodes.append({"name": node.name, "text": node.text})  # Changed this line
+        nodes.append({"name": node.name})  # Changed this line
 
         for child in node.children:
-            if node.text is not None and child.text is not None:
-                edge = {"source": node.name, "target": child.text}  # Changed this line
-                edges.append(edge)
+            edge = {"source": node.name, "target": child.name}  # Changed this line
+            edges.append(edge)
 
             # Recursively call getNodeList on the child node
             child_nodes, child_edges = self.getNodeList(child)

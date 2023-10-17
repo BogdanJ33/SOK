@@ -1,15 +1,20 @@
 <style>
 
-circle {
-  fill: cadetblue;
+.node {
+  cursor: pointer;
+  color: #3182bd;
+
 }
-line {
-  stroke: #ccc;
+
+.link {
+  fill: none;
+  stroke: #9ecae1;
+  stroke-width: 1.5px;
 }
 text {
   text-anchor: middle;
   font-family: "Helvetica Neue", Helvetica, sans-serif;
-  fill: #666;
+  fill: black;
   font-size: 16px;
 }
 .tooltip
@@ -25,14 +30,18 @@ text {
 }
 
 </style>
-<svg id="graph" style="
-height: 100%;
-margin: 0 auto;
-display: block;
-width: 100%;
-"></svg>
+<script>
+    function nodeClick(el){
+       alert("name: "+el.id);
+    }
+</script>
+<div>
+    <svg width="800" height="800">
 
-<script src="https://d3js.org/d3.v7.min.js"></script>
+    </svg>
+</div>
+
+<script src="https://d3js.org/d3.v3.js"></script>
 
 
 <script id = "main-script">
@@ -43,126 +52,80 @@ width: 100%;
   nodes = {{nodes|safe}}
 
         var links = [
-            {source: "Lang", target: "Brit"},
-            {source: "Lang", target: "Het"},
-            {source: "Brit", target: "Zet"}
+
         ];
 
-  var svg = d3.select('#graph');
+  var svg = d3.select('svg');
 
-  var width = svg.node().parentNode.clientWidth, height = svg.node().parentNode.clientHeight
+  var force = d3.layout.force() //kreiranje force layout-a
+        .size([600, 600]) //raspoloziv prostor za iscrtavanje
+        .nodes(d3.values(nodes)) //dodaj nodove
+        .links(links) //dodaj linkove
+        .on("tick", tick) //sta treba da se desi kada su izracunate nove pozicija elemenata
+        .linkDistance(300) //razmak izmedju elemenata
+        .charge(-100)//koliko da se elementi odbijaju
+        .start(); //pokreni izracunavanje pozicija
 
+  var link = svg.selectAll('.link')
+        .data(links)
+        .enter().append('line')
+        .attr('class', 'link');
 
-  console.log(links);
-  console.log(nodes);
+    // add the nodes
+    var node = svg.selectAll('.node')
+    .data(force.nodes())
+    .enter().append('g');
 
-  var simulation = d3.forceSimulation(nodes)
-  .force('charge', d3.forceManyBody().strength(-100))
-  .force('center', d3.forceCenter(width / 2, height / 2))
-
-  .on('tick', ticked);
-
-  function updateLinks() {
-	var u = d3.select('#graph')
-		.selectAll('line')
-		.data(links)
-		.join('line')
-		.attr('x1', function(d) {
-			return d.source.x
-		})
-		.attr('y1', function(d) {
-			return d.source.y
-		})
-		.attr('x2', function(d) {
-			return d.target.x
-		})
-		.attr('y2', function(d) {
-			return d.target.y
-		});
-
-}
-
-function updateNodes() {
-	u = d3.select('#graph')
-		.selectAll('text')
-		.data(nodes)
-		.join('text')
-		.text(function(d) {
-			return d.name
-		})
-		.attr('x', function(d) {
-			return d.x
-		})
-		.attr('y', function(d) {
-			return d.y
-		})
-		.attr('dy', function(d) {
-			return 5
-		});
-}
-function dragStart(event, d) {
-        simulation.alphaTarget(0.2).restart();
-        d.fx = event.x;
-        d.fy = event.y;
-      }
-
-      function dragging(event, d) {
-        d.fx = event.x;
-        d.fy = event.y;
-      }
-
-      function dragEnd(event, d) {
-        simulation.alphaTarget(0);
-        d.fx = null;
-        d.fy = null;
-
-      }
-
-  function ticked() {
-    updateLinks()
-	updateNodes()
-
-}
-
-simulation.force('charge', d3.forceManyBody())
-
-var g = d3.select('#graph').append('g');
-
-g.selectAll('line')
-    .data(links)
-    .enter()
-    .append('line')
-    .attr('x1', function(d) { return d.source.x; })
-    .attr('y1', function(d) { return d.source.y; })
-    .attr('x2', function(d) { return d.target.x; })
-    .attr('y2', function(d) { return d.target.y; });
-
-g.selectAll('text')
-    .data(nodes)
-    .enter()
-    .append('text')
-    .text(function(d) {return d.name; })
-    .attr('x', function(d) { return d.x; })
-    .attr('y', function(d) { return d.y; })
-    .call(d3.drag()
-            .on('start', dragStart)
-            .on('drag', dragging)
-            .on('end', dragEnd))
-            .on('mouseover', function(d) {
-              d3.selectAll('.tooltip').remove();
-              var div = d3.select('body').append('div')
-                .attr('class', 'tooltip')
-                .text(parseJSON(d.target.__data__.attributes));
-            })
-
-
-
-var zooom = d3.zoom()
-    .on('zoom', function() {
-		g.attr('transform', d3.zoomTransform(this));
+node.append('circle')
+    .attr('class', 'node')
+    .attr('id', function(d) { return d.name; })
+    .attr('r', 20)
+    .attr('fill', 'yellow')
+    .on('click', function() {
+        nodeClick(this);
     });
 
-d3.select('#graph').call(zooom);
+node.append('text')
+    .attr('class', 'label')
+    .attr('text-anchor', 'middle')
+    .attr('dy', 5)
+    .text(function(d) { return d.name; });
+    d3.selectAll('.node').each(function(d){slozenPrikaz(d);});
+
+
+  function tick(e) {
+
+        node.attr("transform", function(d) {return "translate(" + d.x + "," + d.y + ")";})
+            .call(force.drag);
+
+        link.attr('x1', function(d) { return d.source.x; })
+            .attr('y1', function(d) { return d.source.y; })
+            .attr('x2', function(d) { return d.target.x; })
+            .attr('y2', function(d) { return d.target.y; });
+        d3.selectAll('.node').each(function(d) { slozenPrikaz(d); });
+
+    }
+
+  function slozenPrikaz(d) {
+      var duzina=150;
+
+
+      var textSize=10;
+
+    d3.select("g#"+d.name).append('text').attr('x',duzina/2).attr('y',10)
+      .attr('text-anchor','middle')
+      .attr('font-size',textSize).attr('font-family','sans-serif')
+      .attr('fill','green').text(d.name);
+
+
+  }
+
+
+
+
+
+
+
 
 
 
