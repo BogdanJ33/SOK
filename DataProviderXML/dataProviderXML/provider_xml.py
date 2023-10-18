@@ -7,6 +7,7 @@ from core.models import Graph, Node
 class ProviderXML:
     def __init__(self):
         self.nodes_dict = {}
+        self.node_counter = 0
 
     def parse_element(self, element, parent=None):
         attrib = {}
@@ -16,6 +17,9 @@ class ProviderXML:
         attrib["name"] = element.tag
         if element.text and element.text.strip() != "":
             attrib["text"] = element.text.strip()
+
+        attrib["id"] = self.node_counter
+        self.node_counter += 1
 
         node = Node(**attrib, parent=parent)
 
@@ -30,7 +34,7 @@ class ProviderXML:
 
     def print_node(self, node, indent=0):
         if node.text is not None:
-            print("  " * indent + node.text)
+            print("  " * indent + str(node.id))
         for child in node.children:
             self.print_node(child, indent + 1)
 
@@ -42,7 +46,7 @@ class ProviderXML:
         nodes.append({"name": node.name})  # Changed this line
 
         for child in node.children:
-            edge = {"source": node.name, "target": child.name}  # Changed this line
+            edge = {"source": node.id, "target": child.id}  # Changed this line
             edges.append(edge)
 
             # Recursively call getNodeList on the child node

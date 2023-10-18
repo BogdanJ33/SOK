@@ -17,13 +17,13 @@ def parse_and_visualize(request):
     print(parsed_data)
     parser[0].print_node(parsed_data)
 
-    nodes, edges = parser[0].getNodeList(parsed_data)
-    print(nodes)
+    nodes, links = parser[0].getNodeList(parsed_data)
+    print(links)
 
-    visualization_html = pluginVisualization[0].visualize(nodes)
+    visualization_html = pluginVisualization[0].visualize(nodes, links)
     visualization_html = mark_safe(visualization_html)
 
-    return render(request, 'index.html', {'visualization_html': visualization_html, 'nodes': nodes})
+    return render(request, 'index.html', {'visualization_html': visualization_html, 'nodes': nodes, 'links': links})
 
 
 

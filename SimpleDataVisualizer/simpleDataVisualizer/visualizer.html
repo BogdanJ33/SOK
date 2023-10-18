@@ -49,11 +49,15 @@ text {
 
 
 
-  nodes = {{nodes|safe}}
+  var nodes = {{nodes|safe}}
 
-        var links = [
+  var links = {{links|safe}}
 
-        ];
+
+  console.log(links)
+
+
+
 
   var svg = d3.select('svg');
 
@@ -119,15 +123,6 @@ node.append('text')
 
 
   }
-
-
-
-
-
-
-
-
-
 
 
 </script>
