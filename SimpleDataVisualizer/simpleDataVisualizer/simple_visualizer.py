@@ -21,8 +21,9 @@ class SimpleVisualizer:
 
         return d3_json
 
-    def visualize(self, graph_data):
-        context = {'nodes': graph_data
+    def visualize(self, graph_data, graph_data2):
+        context = {'nodes': graph_data,
+                   'links': graph_data2
         }
         return render_to_string('visualizer.html', context)
 

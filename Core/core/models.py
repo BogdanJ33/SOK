@@ -4,8 +4,9 @@ from django.db import models
 
 
 class Node:
-    def __init__(self, name, attributes=None, children=None, text=None, parent = None):
+    def __init__(self, name, attributes=None, children=None,id=None, text=None, parent = None):
         self.name = name
+        self.id = id
         self.attributes = attributes or {}
         self.children = children or []
         self.text = text

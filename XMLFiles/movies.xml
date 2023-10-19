@@ -1,0 +1,38 @@
+<movies>
+
+	<movie genre="ACTION">
+		<title lang="en">Die Hard</title>
+		<director>John McTiernan</director>
+		<year>1988</year>
+		<rating>R</rating>
+	</movie>
+
+	<movie genre="COMEDY">
+		<title lang="en">Superbad</title>
+		<director>Greg Mottola</director>
+		<year>2007</year>
+		<rating>R</rating>
+	</movie>
+
+	<movie genre="SCI-FI">
+		<title lang="en">The Matrix</title>
+		<director>Lana Wachowski, Lilly Wachowski</director>
+		<year>1999</year>
+		<rating>R</rating>
+	</movie>
+
+	<movie genre="HORROR">
+		<title lang="en">The Shining</title>
+		<director>Stanley Kubrick</director>
+		<year>1980</year>
+		<rating>R</rating>
+	</movie>
+
+	<movie genre="ANIMATION">
+		<title lang="en">Toy Story</title>
+		<director>John Lasseter</director>
+		<year>1995</year>
+		<rating>G</rating>
+	</movie>
+
+</movies>
