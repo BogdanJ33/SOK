@@ -11,8 +11,6 @@ class ProviderXML:
 
     def parse_element(self, element, parent=None):
         attrib = {}
-        for key, value in element.attrib.items():
-            attrib[key] = value
 
         attrib["name"] = element.tag
         if element.text and element.text.strip() != "":
