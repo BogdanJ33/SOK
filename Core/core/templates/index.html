@@ -28,28 +28,33 @@
     <script>
 
         document.getElementById('parse-form').addEventListener('submit', function (e) {
-            e.preventDefault();
+    e.preventDefault();
 
-            var fileName = document.getElementById('file').value;
-            var formData = new FormData();
-            formData.append('file', fileName);
-            var csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+    var fileName = document.getElementById('file').value;
+    console.log('File Name:', fileName);
 
-            fetch('/parse_and_visualize/', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRFToken': csrf_token
-                }
-            })
-                .then(function (response) {
-                    return response.text();
-                })
-                .then(function (data) {
-                    // Ovde možete manipulisati podacima koji su vraćeni iz servera
-                    console.log(data);
-                });
+    var formData = new FormData();
+    formData.append('file', fileName);
+    var csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+    console.log('CSRF Token:', csrf_token);
+
+    fetch('/parse_and_visualize/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrf_token,
+        },
+        body: formData,
+    })
+        .then(response => {
+
+            console.log(response);
+        })
+        .catch(error => {
+            console.error(error);
         });
+});
+
+
     </script>
 </body>
 </html>

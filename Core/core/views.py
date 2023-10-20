@@ -10,21 +10,29 @@ def index(request):
 
 
 def parse_and_visualize(request):
-    parser = apps.get_app_config('core').pluginXml
-    pluginVisualization = apps.get_app_config('core').pluginVisualization
+    if request.method == 'POST':
+        uploaded_file = request.POST.get('file')
+        uploaded_file = uploaded_file[12:]
+        print(uploaded_file)
 
-    parsed_data = parser[0].parse("../XMLFiles/langualges.xml")
-    print(parsed_data)
-    parser[0].print_node(parsed_data)
 
-    nodes, links = parser[0].getNodeList(parsed_data)
-    print(links)
 
-    visualization_html = pluginVisualization[0].visualize(nodes, links)
-    visualization_html = mark_safe(visualization_html)
-    print(visualization_html)
+        parser = apps.get_app_config('core').pluginXml
+        pluginVisualization = apps.get_app_config('core').pluginVisualization
 
-    return render(request, 'index.html', {'visualization_html': visualization_html, 'nodes': nodes, 'links': links})
+        parsed_data = parser[0].parse("../XMLFiles/" + uploaded_file)  # Koristi ime fajla
+        print(parsed_data)
+        parser[0].print_node(parsed_data)
+
+        nodes, links = parser[0].getNodeList(parsed_data)
+        print(links)
+
+        visualization_html = pluginVisualization[0].visualize(nodes, links)
+        visualization_html = mark_safe(visualization_html)
+
+        return render(request, 'index.html', {'visualization_html': visualization_html, 'nodes': nodes, 'links': links})
+    return render(request, 'index.html')
+
 
 
 
