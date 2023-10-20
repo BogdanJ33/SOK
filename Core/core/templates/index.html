@@ -24,6 +24,32 @@
         {{ visualization_html|safe }}
         {% endblock %}
 </div>
+{% csrf_token %}
+    <script>
 
+        document.getElementById('parse-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            var fileName = document.getElementById('file').value;
+            var formData = new FormData();
+            formData.append('file', fileName);
+            var csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+            fetch('/parse_and_visualize/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': csrf_token
+                }
+            })
+                .then(function (response) {
+                    return response.text();
+                })
+                .then(function (data) {
+                    // Ovde možete manipulisati podacima koji su vraćeni iz servera
+                    console.log(data);
+                });
+        });
+    </script>
 </body>
 </html>
