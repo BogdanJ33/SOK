@@ -1,11 +1,18 @@
 # SOK
 Student: Bogdan Janosevic SV65/2020
 
-# HOW TO START A PROGRAM:
-first of all u need to install django, pip install django.
-You need to activate virtual env.
-you need to position yourself in SOK folder
-then follow there commands:
+## HOW TO START A PROGRAM:
+
+1. First of all, you need to install Django:
+2. pip install django
+3. 
+4. Activate the virtual environment.
+
+5. Navigate to the SOK folder.
+
+6. Follow these commands:
+
+```bash
 cd core
 python setup.py install
 cd ..
