@@ -36,15 +36,16 @@ text {
     }
 </script>
 <div>
-    <svg width="1000" height="1000">
+    <svg width="1000" height="1100">
 
     </svg>
 </div>
 
 <script src="https://d3js.org/d3.v3.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 
 <script id = "main-script">
+
   window.localStorage.clear();
 
 
@@ -54,15 +55,19 @@ text {
   var links = {{links|safe}}
 
 
-  console.log(links)
-
-
-
-
-  var svg = d3.select('svg');
+  var svg = d3.select('svg')
+  .call(
+    _.debounce(
+      d3.behavior.zoom()
+        .on("zoom", function () {
+          svg.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
+        }),
+      50
+    )
+  );
 
   var force = d3.layout.force() //kreiranje force layout-a
-        .size([1000, 1000]) //raspoloziv prostor za iscrtavanje
+        .size([1100, 900]) //raspoloziv prostor za iscrtavanje
         .nodes(d3.values(nodes)) //dodaj nodove
         .links(links) //dodaj linkove
         .on("tick", tick) //sta treba da se desi kada su izracunate nove pozicija elemenata
@@ -114,17 +119,13 @@ node.append('text')
 
   function slozenPrikaz(d) {
       var duzina=100;
-
-
       var textSize=6;
 
-    d3.select("g#"+d.name).append('text').attr('x',duzina/2).attr('y',10)
+    d3.select("g#"+d.name).append('text').attr('x',duzina/2).attr('y',8)
       .attr('text-anchor','middle')
       .attr('font-size',textSize).attr('font-family','sans-serif')
       .attr('fill','green').text(d.name);
 
 
   }
-
-
 </script>
