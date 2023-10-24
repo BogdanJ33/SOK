@@ -40,11 +40,11 @@ class ProviderXML:
         nodes = []
         edges = []
 
-        # Add information about the current node
-        nodes.append({"name": node.name})  # Changed this line
+
+        nodes.append({"name": node.name})
 
         for child in node.children:
-            edge = {"source": node.id, "target": child.id}  # Changed this line
+            edge = {"source": node.id, "target": child.id}
             edges.append(edge)
 
             # Recursively call getNodeList on the child node
@@ -53,6 +53,7 @@ class ProviderXML:
             # Extend the nodes and edges lists with the child's information
             nodes.extend(child_nodes)
             edges.extend(child_edges)
+        self.node_counter = 0
 
         return nodes, edges
 
