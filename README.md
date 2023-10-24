@@ -5,12 +5,9 @@ Student: Bogdan Janosevic SV65/2020
 
 1. First of all, you need to install Django:
 2. pip install django
-3. 
-4. Activate the virtual environment.
-
-5. Navigate to the SOK folder.
-
-6. Follow these commands:
+3. Activate the virtual environment.
+4. Navigate to the SOK folder.
+5. Follow these commands:
 
 ```bash
 cd core
