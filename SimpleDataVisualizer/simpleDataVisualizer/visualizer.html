@@ -36,7 +36,7 @@ text {
     }
 </script>
 <div>
-    <svg width="1200" height="1200">
+    <svg width="1000" height="1000">
 
     </svg>
 </div>
@@ -62,12 +62,12 @@ text {
   var svg = d3.select('svg');
 
   var force = d3.layout.force() //kreiranje force layout-a
-        .size([1200, 1200]) //raspoloziv prostor za iscrtavanje
+        .size([1000, 1000]) //raspoloziv prostor za iscrtavanje
         .nodes(d3.values(nodes)) //dodaj nodove
         .links(links) //dodaj linkove
         .on("tick", tick) //sta treba da se desi kada su izracunate nove pozicija elemenata
-        .linkDistance(500) //razmak izmedju elemenata
-        .charge(-300)//koliko da se elementi odbijaju
+        .linkDistance(80) //razmak izmedju elemenata
+        .charge(-200)//koliko da se elementi odbijaju
         .start(); //pokreni izracunavanje pozicija
 
   var link = svg.selectAll('.link')
@@ -83,7 +83,7 @@ text {
 node.append('circle')
     .attr('class', 'node')
     .attr('id', function(d) { return d.name; })
-    .attr('r', 20)
+    .attr('r', 19)
     .attr('fill', 'yellow')
     .on('click', function() {
         nodeClick(this);
@@ -92,7 +92,7 @@ node.append('circle')
 node.append('text')
     .attr('class', 'label')
     .attr('text-anchor', 'middle')
-    .attr('dy', 5)
+    .attr('dy', 3)
     .text(function(d) { return d.name; });
     d3.selectAll('.node').each(function(d){slozenPrikaz(d);});
 
@@ -100,6 +100,8 @@ node.append('text')
   function tick(e) {
 
         node.attr("transform", function(d) {return "translate(" + d.x + "," + d.y + ")";})
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
             .call(force.drag);
 
         link.attr('x1', function(d) { return d.source.x; })
@@ -111,10 +113,10 @@ node.append('text')
     }
 
   function slozenPrikaz(d) {
-      var duzina=150;
+      var duzina=100;
 
 
-      var textSize=10;
+      var textSize=6;
 
     d3.select("g#"+d.name).append('text').attr('x',duzina/2).attr('y',10)
       .attr('text-anchor','middle')
