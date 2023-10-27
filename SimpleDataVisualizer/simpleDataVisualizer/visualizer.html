@@ -17,17 +17,7 @@ text {
   fill: black;
   font-size: 16px;
 }
-.tooltip
-{
-  position :absolute;
-  bottom: 0;
-  padding: 10px;
-  z-index: 10;
-  visibility: visible;
-  border-top: 2px solid #989898;
-  border-right: 2px solid #989898;
-  border-radius:0px 5px 0px 0px;
-}
+
 
 </style>
 <script>
@@ -36,15 +26,16 @@ text {
     }
 </script>
 <div>
-    <svg width="800" height="800">
+    <svg width="1000" height="1100">
 
     </svg>
 </div>
 
 <script src="https://d3js.org/d3.v3.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 
 <script id = "main-script">
+
   window.localStorage.clear();
 
 
@@ -54,20 +45,24 @@ text {
   var links = {{links|safe}}
 
 
-  console.log(links)
-
-
-
-
-  var svg = d3.select('svg');
+  var svg = d3.select('svg')
+  .call(
+    _.debounce(
+      d3.behavior.zoom()
+        .on("zoom", function () {
+          svg.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
+        }),
+      50
+    )
+  );
 
   var force = d3.layout.force() //kreiranje force layout-a
-        .size([600, 600]) //raspoloziv prostor za iscrtavanje
+        .size([1100, 900]) //raspoloziv prostor za iscrtavanje
         .nodes(d3.values(nodes)) //dodaj nodove
         .links(links) //dodaj linkove
         .on("tick", tick) //sta treba da se desi kada su izracunate nove pozicija elemenata
-        .linkDistance(300) //razmak izmedju elemenata
-        .charge(-100)//koliko da se elementi odbijaju
+        .linkDistance(80) //razmak izmedju elemenata
+        .charge(-200)//koliko da se elementi odbijaju
         .start(); //pokreni izracunavanje pozicija
 
   var link = svg.selectAll('.link')
@@ -83,7 +78,7 @@ text {
 node.append('circle')
     .attr('class', 'node')
     .attr('id', function(d) { return d.name; })
-    .attr('r', 20)
+    .attr('r', 19)
     .attr('fill', 'yellow')
     .on('click', function() {
         nodeClick(this);
@@ -92,7 +87,7 @@ node.append('circle')
 node.append('text')
     .attr('class', 'label')
     .attr('text-anchor', 'middle')
-    .attr('dy', 5)
+    .attr('dy', 3)
     .text(function(d) { return d.name; });
     d3.selectAll('.node').each(function(d){slozenPrikaz(d);});
 
@@ -100,6 +95,8 @@ node.append('text')
   function tick(e) {
 
         node.attr("transform", function(d) {return "translate(" + d.x + "," + d.y + ")";})
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
             .call(force.drag);
 
         link.attr('x1', function(d) { return d.source.x; })
@@ -111,18 +108,14 @@ node.append('text')
     }
 
   function slozenPrikaz(d) {
-      var duzina=150;
+      var duzina=100;
+      var textSize=6;
 
-
-      var textSize=10;
-
-    d3.select("g#"+d.name).append('text').attr('x',duzina/2).attr('y',10)
+    d3.select("g#"+d.name).append('text').attr('x',duzina/2).attr('y',8)
       .attr('text-anchor','middle')
       .attr('font-size',textSize).attr('font-family','sans-serif')
       .attr('fill','green').text(d.name);
 
 
   }
-
-
 </script>

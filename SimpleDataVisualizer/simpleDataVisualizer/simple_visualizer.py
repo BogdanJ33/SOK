@@ -10,17 +10,6 @@ from django.template.loader import render_to_string
 
 class SimpleVisualizer:
 
-    def convert_to_D3(self, node):
-        d3_json = {"name": node.name}
-
-        if node.attributes:
-            d3_json["attributes"] = node.attributes
-
-        if node.children:
-            d3_json["children"] = [self.visualize(child) for child in node.children]
-
-        return d3_json
-
     def visualize(self, graph_data, graph_data2):
         context = {'nodes': graph_data,
                    'links': graph_data2

@@ -9,7 +9,7 @@ class CoreConfig(AppConfig):
     def ready(self):
         self.pluginXml = load_plugins("xml_parser")
         self.pluginVisualization = load_plugins("visualizer")
-        print("ucitavanje", len(self.pluginXml))
+        print("parser", len(self.pluginXml))
         print("visual", len(self.pluginVisualization))
 
 def load_plugins(group_tag):

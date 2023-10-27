@@ -65,6 +65,4 @@ class ProviderXML:
         return self.parse_element(root)
 
 
-#parser = ProviderXML()
-#parsed_data = parser.parse('../../XMLFiles/languages.xml')
-#print(parsed_data)
+
