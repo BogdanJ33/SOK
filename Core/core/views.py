@@ -29,11 +29,6 @@ def parse_and_visualize(request):
 
 
 
-def visualize(request, visualization_html):
-    return render(request, 'index.html', {'visualization_html': visualization_html})
-
-
-
 
 
 
