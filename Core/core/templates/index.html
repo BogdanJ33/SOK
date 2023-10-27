@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="../static/style.css"/>
+    <title>Bogdan SOK project</title>
+</head>
+<body>
+
+
+    <nav class="navbar">
+        <h1 class="navbar-title">Bogdan SOK projekat</h1>
+
+        <form class="form-inline" id="parse-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="file">Izaberite fajl za parsiranje:</label>
+            <input type="file" name="file" id="file" required>
+            <button type="submit" id="parse-btn">Parsiraj</button>
+
+        </form>
+
+    </nav>
+    <div class="container">
+
+
+{% block content %}
+        {{ visualization_html }}
+        {% endblock %}
+        </div>
+
+    <script>
+
+        document.getElementById('parse-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var fileName = document.getElementById('file').value;
+    console.log('File Name:', fileName);
+
+    var formData = new FormData();
+    formData.append('file', fileName);
+    var csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+    console.log('CSRF Token:', csrf_token);
+
+    fetch('/parse_and_visualize/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrf_token,
+        },
+        body: formData,
+    })
+        .then(response => {
+
+            location.href = ''
+            //window.location.href = '/parse_and_visualize/';
+
+        })
+        .catch(error => {
+            console.error(error);
+        });
+});
+
+
+    </script>
+
+</body>
+</html>

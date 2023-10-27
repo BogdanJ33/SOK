@@ -1,0 +1,22 @@
+<university>
+    <campus name="North">
+        <building type="Classroom">
+            <room number="101">Introduction to Physics</room>
+            <room number="102">Chemistry Lab</room>
+        </building>
+        <building type="Library">
+            <room number="201">Quiet Study Area</room>
+            <room number="202">Computer Lab</room>
+        </building>
+    </campus>
+    <campus name="South">
+        <building type="Gym">
+            <room number="301">Weight Room</room>
+            <room number="302">Basketball Court</room>
+        </building>
+        <building type="Dormitory">
+            <room number="401">Single Suite</room>
+            <room number="402">Double Suite</room>
+        </building>
+    </campus>
+</university>

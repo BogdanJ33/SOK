@@ -1,0 +1,121 @@
+<style>
+
+.node {
+  cursor: pointer;
+  color: #3182bd;
+
+}
+
+.link {
+  fill: none;
+  stroke: #9ecae1;
+  stroke-width: 1.5px;
+}
+text {
+  text-anchor: middle;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  fill: black;
+  font-size: 16px;
+}
+
+
+</style>
+<script>
+    function nodeClick(el){
+       alert("name: "+el.id);
+    }
+</script>
+<div>
+    <svg width="1000" height="1100">
+
+    </svg>
+</div>
+
+<script src="https://d3js.org/d3.v3.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+
+<script id = "main-script">
+
+  window.localStorage.clear();
+
+
+
+  var nodes = {{nodes|safe}}
+
+  var links = {{links|safe}}
+
+
+  var svg = d3.select('svg')
+  .call(
+    _.debounce(
+      d3.behavior.zoom()
+        .on("zoom", function () {
+          svg.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
+        }),
+      50
+    )
+  );
+
+  var force = d3.layout.force() //kreiranje force layout-a
+        .size([1100, 900]) //raspoloziv prostor za iscrtavanje
+        .nodes(d3.values(nodes)) //dodaj nodove
+        .links(links) //dodaj linkove
+        .on("tick", tick) //sta treba da se desi kada su izracunate nove pozicija elemenata
+        .linkDistance(80) //razmak izmedju elemenata
+        .charge(-200)//koliko da se elementi odbijaju
+        .start(); //pokreni izracunavanje pozicija
+
+  var link = svg.selectAll('.link')
+        .data(links)
+        .enter().append('line')
+        .attr('class', 'link');
+
+    // add the nodes
+    var node = svg.selectAll('.node')
+    .data(force.nodes())
+    .enter().append('g');
+
+node.append('circle')
+    .attr('class', 'node')
+    .attr('id', function(d) { return d.name; })
+    .attr('r', 19)
+    .attr('fill', 'yellow')
+    .on('click', function() {
+        nodeClick(this);
+    });
+
+node.append('text')
+    .attr('class', 'label')
+    .attr('text-anchor', 'middle')
+    .attr('dy', 3)
+    .text(function(d) { return d.name; });
+    d3.selectAll('.node').each(function(d){slozenPrikaz(d);});
+
+
+  function tick(e) {
+
+        node.attr("transform", function(d) {return "translate(" + d.x + "," + d.y + ")";})
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+            .call(force.drag);
+
+        link.attr('x1', function(d) { return d.source.x; })
+            .attr('y1', function(d) { return d.source.y; })
+            .attr('x2', function(d) { return d.target.x; })
+            .attr('y2', function(d) { return d.target.y; });
+        d3.selectAll('.node').each(function(d) { slozenPrikaz(d); });
+
+    }
+
+  function slozenPrikaz(d) {
+      var duzina=100;
+      var textSize=6;
+
+    d3.select("g#"+d.name).append('text').attr('x',duzina/2).attr('y',8)
+      .attr('text-anchor','middle')
+      .attr('font-size',textSize).attr('font-family','sans-serif')
+      .attr('fill','green').text(d.name);
+
+
+  }
+</script>
