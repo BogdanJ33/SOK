@@ -19,6 +19,13 @@
             <button type="submit" id="parse-btn">Parsiraj</button>
 
         </form>
+        <div>
+    <input type="text" id="searchInput" placeholder="Search by node name">
+    <button onclick="searchNodes()">Search</button>
+
+            <input type="text" id="filterNode" placeholder="filter by node name">
+    <button onclick="filterNodes()">Filter</button>
+    </div>
 
     </nav>
     <div class="container">
@@ -30,6 +37,53 @@
         </div>
 
     <script>
+
+        function filterNodes() {
+    var searchTerm = document.getElementById('filterNode').value.toLowerCase();
+
+     // Sakrij sve čvorove
+    d3.selectAll('.node').style('display', 'none');
+
+    // Prikazi čvorove koji se poklapaju sa pretragom
+    d3.selectAll('.node').filter(function(d) {
+        return d.name.toLowerCase().includes(searchTerm);
+    }).style('display', 'block');
+
+    // Prikazi sve veze
+    d3.selectAll('.link').style('display', 'block');
+
+    // Pronađi čvorove koji su sakriveni
+    var hiddenNodes = d3.selectAll('.node').filter(function() {
+        return getComputedStyle(this).display === 'none';
+    });
+
+    // Sakrij veze koje su povezane sa sakrivenim čvorovima
+    d3.selectAll('.link').filter(function(d) {
+
+    var isSourceHidden = hiddenNodes.data().some(function(node) {
+        console.log(node.name)
+        return node.name === d.source.name;
+    });
+
+    var isTargetHidden = hiddenNodes.data().some(function(node) {
+        console.log(node.name === d.target)
+        return node.name === d.target.name;
+    });
+
+    return isSourceHidden || isTargetHidden;
+}).style('display', 'none');
+}
+        function searchNodes() {
+    var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+    // Resetirajte boje svih čvorova
+    d3.selectAll('.node').attr('fill', 'yellow');
+
+    // Filtrirajte čvorove koji se poklapaju sa pretragom
+    d3.selectAll('.node').filter(function(d) {
+        return d.name.toLowerCase().includes(searchTerm);
+    }).attr('fill', 'green');
+  }
 
         document.getElementById('parse-form').addEventListener('submit', function (e) {
     e.preventDefault();
