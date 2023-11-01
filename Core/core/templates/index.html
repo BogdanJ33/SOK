@@ -20,11 +20,19 @@
 
         </form>
         <div>
-    <input type="text" id="searchInput" placeholder="Search by node name">
-    <button onclick="searchNodes()">Search</button>
+    <input type="text" id="searchInput" placeholder="Search by node name" style="padding: 5px;">
+    <button style ="margin-right: 10px; padding: 5px 10px; background-color: #28a745;
+    border: none;
+    color: #fff;
+    border-radius: 3px;
+    cursor: pointer;" onclick="searchNodes()">Search</button>
 
-            <input type="text" id="filterNode" placeholder="filter by node name">
-    <button onclick="filterNodes()">Filter</button>
+            <input type="text" id="filterNode" placeholder="filter by node name" style="padding: 5px; ;">
+    <button style ="margin-right: 10px; padding: 5px 10px; background-color: #28a745;
+    border: none;
+    color: #fff;
+    border-radius: 3px;
+    cursor: pointer;" onclick="filterNodes()">Filter</button>
     </div>
 
     </nav>
@@ -41,38 +49,34 @@
         function filterNodes() {
     var searchTerm = document.getElementById('filterNode').value.toLowerCase();
             console.log(d3.selectAll('text'));
-            var tekstovi = d3.selectAll('text'); // Ovo će odabrati sve tekstualne elemente u SVG-u
+            var tekstovi = d3.selectAll('text');
 
 tekstovi.each(function() {
-    var tekst = d3.select(this).text().toLowerCase(); // Dobavite tekst svakog tekstualnog elementa i konvertujte ga u mala slova
-    var element = d3.select(this).node(); // Dobavite sam HTML element
+    var tekst = d3.select(this).text().toLowerCase();
+    var element = d3.select(this).node();
 
     if (tekst.includes(searchTerm.toLowerCase())) {
-      element.style.display = 'block'; // Ako se tekst poklapa, prikaži element
+      element.style.display = 'block';
     } else {
-      element.style.display = 'none'; // Inače sakrij element
+      element.style.display = 'none';
     }
   });
-     // Sakrij sve čvorove
+
 
     d3.selectAll('.node').style('display', 'none');
             d3.selectAll('.node text').style('display', 'none');
 
 
-    // Prikazi čvorove koji se poklapaju sa pretragom
     d3.selectAll('.node').filter(function(d) {
         return d.name.toLowerCase().includes(searchTerm);
     }).style('display', 'block');
 
-    // Prikazi sve veze
     d3.selectAll('.link').style('display', 'block');
 
-    // Pronađi čvorove koji su sakriveni
+
     var hiddenNodes = d3.selectAll('.node').filter(function() {
         return getComputedStyle(this).display === 'none';
     });
-
-    // Sakrij veze koje su povezane sa sakrivenim čvorovima
     d3.selectAll('.link').filter(function(d) {
 
     var isSourceHidden = hiddenNodes.data().some(function(node) {
@@ -91,10 +95,9 @@ tekstovi.each(function() {
         function searchNodes() {
     var searchTerm = document.getElementById('searchInput').value.toLowerCase();
 
-    // Resetirajte boje svih čvorova
+
     d3.selectAll('.node').attr('fill', 'yellow');
 
-    // Filtrirajte čvorove koji se poklapaju sa pretragom
     d3.selectAll('.node').filter(function(d) {
         return d.name.toLowerCase().includes(searchTerm);
     }).attr('fill', 'green');

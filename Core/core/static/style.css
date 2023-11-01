@@ -24,7 +24,7 @@ h1{
 
 #parse-btn {
     padding: 5px 10px;
-    background-color: #28a745; /* Promenite boju po želji */
+    background-color: #28a745;
     border: none;
     color: #fff;
     border-radius: 3px;
@@ -32,7 +32,7 @@ h1{
 }
 
 #parse-btn:hover {
-    background-color: #218838; /* Promenite boju po želji */
+    background-color: #298830;
 }
 
 .container {
@@ -55,4 +55,17 @@ h1{
     background-color: #f8f9fa; /* Promenite boju po želji */
     border-radius: 3px;
 }
-
+#searchInput {
+    margin-right: 10px;
+    padding: 5px;
+    border: none;
+    background-color: #f8f9fa; /* Promenite boju po želji */
+    border-radius: 3px;
+}
+#filterNode {
+    margin-right: 10px;
+    padding: 5px;
+    border: none;
+    background-color: #f8f9fa; /* Promenite boju po želji */
+    border-radius: 3px;
+}
