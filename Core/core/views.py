@@ -14,6 +14,7 @@ def index(request):
 
 def parse_and_visualize(request):
     if request.method == 'POST':
+        print("example")
         uploaded_file = request.POST.get('file')
         uploaded_file = uploaded_file[12:]
         parser = apps.get_app_config('core').pluginXml
